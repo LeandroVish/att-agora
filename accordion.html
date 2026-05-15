@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accordion</title>
+    <style>
+        * {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+section {
+    width: 30%;
+    margin: 10vh auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul li {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+ul li h3 {
+    background: purple;
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid white;
+}
+
+ul li p {
+    display: none;
+    background: #f4f4f4;
+    padding: 15px;
+    line-height: 1.5;
+}
+    </style>
+</head>
+
+<body>
+    <section>
+        <h2>FAQ</h2>
+        <ul>
+            <li>
+                <h3>Como fazer a matricula</h3>
+                <p>
+                    Lorem
+                </p>
+                <h3>Como solicitar segunda chamada</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore vel in cupiditate qui, quod ex
+                    natus debitis, perspiciatis non nam impedit? Optio laborum corrupti, quia libero porro sequi
+                    exercitationem veritatis!
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ducimus autem consectetur id eaque rerum, nihil perspiciatis cum suscipit eveniet aperiam eum. Velit blanditiis deleniti et nisi illo voluptatibus vero natus!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor praesentium vero, quas nobis omnis laborum laudantium consequatur, maiores sit possimus fuga quam iure minima ratione ut inventore ducimus, sed consectetur.
+                </p>
+                <h3>Como pedir aprovamento de disciplina</h3>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam animi nihil culpa dolorem rem,
+                    impedit quasi perspiciatis quae, neque earum a molestiae quod accusantium. Earum dignissimos
+                    deleniti nostrum labore veritatis.
+                </p>
+            </li>
+        </ul>
+    </section>
+    <script>
+    let titulos = document.querySelectorAll('h3');
+
+    titulos.forEach(function (titulo) {
+        titulo.addEventListener('click', function () {
+
+            let resposta = titulo.nextElementSibling;
+
+            if (resposta.style.display === 'block') {
+                resposta.style.display = 'none';
+            } else {
+                resposta.style.display = 'block';
+            }
+
+        });
+    });
+</script>
+</body>
+</html>
