@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Color</title>
+</head>
+
+<body>
+
+    <main>
+
+        <section class="captcha">
+
+            <div>
+                <h1>
+                    Captcha Color
+                    <span id="placar">0/15</span>
+                </h1>
+
+                <p id="tempo">00:00</p>
+            </div>
+
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+
+            <h2>
+                CLIQUE NA COR:
+                <span id="cor"></span>
+            </h2>
+
+        </section>
+
+        <section class="bemvindo"></section>
+
+    </main>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111;
+        }
+
+        section {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            width: 50vw;
+            min-width: 320px;
+            margin: 5vw auto;
+            background: black;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        section div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        section div h1 {
+            font-size: 2rem;
+        }
+
+        section div p {
+            font-size: 2rem;
+            color: #00ff88;
+        }
+
+        #placar {
+            display: block;
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        section ul {
+            display: grid;
+            grid-template-columns: 10fr 10fr 10fr;
+            gap: 10px;
+            width: 30vw;
+            min-width: 250px;
+            margin: 30px auto;
+        }
+
+        section ul li {
+            height: 10vw;
+            min-height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        section ul li:hover {
+                transform: scale(1.05);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        section.bemvindo {
+            display: none;
+        }
+
+        .fim {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .fim h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .fim p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            border-radius: 10px;
+            background: #00ff88;
+            color: black;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        @media(max-width:700px) {
+
+            section {
+                width: 90vw;
+            }
+
+            section ul {
+                width: 100%;
+            }
+
+            section ul li {
+                height: 90px;
+            }
+
+            section div h1,
+            section div p {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
+    <script>
+
+        const itens = document.querySelectorAll('li');
+
+        const colors = [
+            { name: "AZUL", value: "#3498db" },
+            { name: "VERDE", value: "#1abc9c" },
+            { name: "ROXO", value: "#9b59b6" },
+            { name: "LARANJA", value: "#e67e22" },
+            { name: "VERMELHO", value: "#e74c3c" },
+            { name: "CINZA", value: "#34495e" }
+        ];
+
+        let acertos = 0;
+        let segundos = 0;
+
+        const spanCor = document.querySelector('#cor');
+        const placar = document.querySelector('#placar');
+        const tempoTela = document.querySelector('#tempo');
+        const captcha = document.querySelector('.captcha');
+
+        for (let i = 0; i < itens.length; i++) {
+
+            itens[i].style.backgroundColor = colors[i].value;
+            itens[i].dataset.nomecor = colors[i].name;
+
+            itens[i].addEventListener('click', function () {
+
+                let corSpan = spanCor.innerText;
+
+                if (itens[i].dataset.nomecor === corSpan) {
+
+                    acertos = acertos + 1;
+
+                    placar.innerText = `${acertos}/15`;
+
+                    itens[i].style.transform = "scale(0.9)";
+
+                    setTimeout(() => {
+                        itens[i].style.transform = "scale(1)";
+                    }, 100);
+
+                    sorteio();
+
+                    if (acertos >= 15) {
+
+                        clearInterval(intervalo);
+
+                        captcha.innerHTML =
+                            `
+                            <div class="fim">
+                                <h1>VOCÊ VENCEU</h1>
+
+                                <p>
+                                    Tempo Final: 00:${segundos.toString().padStart(2, '0')}
+                                </p>
+
+                                <button onclick="reiniciar()">
+                                    Jogar Novamente
+                                </button>
+                            </div>
+                            `;
+                    }
+
+                } else {
+
+                    itens[i].style.opacity = "0.5";
+
+                    setTimeout(() => {
+                        itens[i].style.opacity = "1";
+                    }, 200);
+
+                }
+
+            });
+
+        }
+
+        function sorteio() {
+
+            let indice = parseInt(Math.random() * 6);
+
+            let cor = colors[indice];
+
+            spanCor.textContent = cor.name;
+
+            let indice_cor = parseInt(Math.random() * 6);
+
+            spanCor.style.color = colors[indice_cor].value;
+
+        }
+
+        tempoTela.innerText = `00:00`;
+        const intervalo = setInterval(() => {
+            segundos++;
+            tempoTela.innerText =
+                `00:${segundos.toString().padStart(2, '0')}`;
+            if (segundos >= 20) {
+                clearInterval(intervalo);
+                captcha.innerHTML =
+                    `
+                    <div class="fim">
+                        <h1>TEMPO ESGOTADO</h1>
+                        <p>
+                            Você fez ${acertos}/15 pontos
+                        </p>
+                        <button onclick="reiniciar()">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                    `;
+            }
+
+        }, 1000);
+
+        function reiniciar() {
+            location.reload();
+        }
+
+        sorteio();
+
+    </script>
+
+</body>
+
+</html>
